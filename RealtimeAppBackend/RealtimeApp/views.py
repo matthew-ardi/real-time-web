@@ -7,6 +7,7 @@ from django.http import HttpResponse
 import pusher
 import os
 import json
+import time
 
 pusher_client = pusher.Pusher(
     app_id='659585',
@@ -19,18 +20,31 @@ pusher_client = pusher.Pusher(
 data = DataModel(False, False, False, False)
 
 
+
+
 def dashboard(request):
     print(os.getcwd())
     return render(request, "dashboard.html");
 
+def change(request):
+    data.roomLight = not data.roomLight
+    data.spaceHeater = not data.spaceHeater
+    data.blender = not data.blender
+    data.benchLight = not data.benchLight
+    return HttpResponse("done");
 
 @csrf_exempt
 def retrieveData(request):
+    while True:
+        pusher_client.trigger('my-channel', 'my-event', json.dumps(data.__dict__))
+        time.sleep(3)
+
+@csrf_exempt
+def retrieveBluetooth(request):
     # @TODO(matthew-ardi): Please put the code where you receive the data from bluetooth signal here and
     # @TODO:               then modify the global object data
-    print("Hello World")
-    pusher_client.trigger('my-channel', 'my-event', json.dumps(data.__dict__))
-    return HttpResponse("done");
+    return
+
 
 
 def setData(data, roomLight, benchLight, blender, spaceHeater):
