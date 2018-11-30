@@ -22,7 +22,19 @@
 
         var channel = pusher.subscribe('my-channel');
         channel.bind('my-event', function(data) {
-            console.log(data)
+            // we can set the image of check mark or sth to make this be more fancy
+            document.getElementById("roomlightStat").innerHTML = "ON"
+            document.getElementById("roomlightStat").innerHTML = "OFF"
+
+            document.getElementById("spaceheatStat").innerHTML = "ON"
+            document.getElementById("spaceheatStat").innerHTML = "OFF"
+
+            document.getElementById("blenderStat").innerHTML = "ON"
+            document.getElementById("blenderStat").innerHTML = "OFF"
+
+            document.getElementById("benchlightStat").innerHTML = "ON"
+            document.getElementById("benchlightStat").innerHTML = "OFF"
+
         });
     </script>
     <style>
