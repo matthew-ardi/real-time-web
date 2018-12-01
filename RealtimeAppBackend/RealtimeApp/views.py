@@ -18,7 +18,7 @@ pusher_client = pusher.Pusher(
     ssl=True
 )
 
-data = DataModel(False, False, False, False)
+data = DataModel(False, False, False, False, False, False)
 
 
 
@@ -58,7 +58,7 @@ def retrieveBluetooth(request):
 
     # @TODO:               then modify the global object data
 
-    
+
     return
 
 
