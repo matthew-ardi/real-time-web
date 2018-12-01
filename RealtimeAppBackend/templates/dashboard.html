@@ -23,18 +23,29 @@
         var channel = pusher.subscribe('my-channel');
         channel.bind('my-event', function(data) {
             // we can set the image of check mark or sth to make this be more fancy
-            document.getElementById("roomlightStat").innerHTML = "ON"
-            document.getElementById("roomlightStat").innerHTML = "OFF"
+            if (data['roomLight']) {
+                document.getElementById("roomlightStat").innerHTML = "ON"
+            } else {
+                document.getElementById("roomlightStat").innerHTML = "OFF"
+            }
 
-            document.getElementById("spaceheatStat").innerHTML = "ON"
-            document.getElementById("spaceheatStat").innerHTML = "OFF"
+            if (data['benchLight']) {
+                document.getElementById("benchlightStat").innerHTML = "ON"
+            } else {
+                document.getElementById("benchlightStat").innerHTML = "OFF"
+            }
 
-            document.getElementById("blenderStat").innerHTML = "ON"
-            document.getElementById("blenderStat").innerHTML = "OFF"
+            if (data['spaceHeater']) {
+                document.getElementById("spaceheatStat").innerHTML = "ON"
+            } else {
+                document.getElementById("spaceheatStat").innerHTML = "OFF"
+            }
 
-            document.getElementById("benchlightStat").innerHTML = "ON"
-            document.getElementById("benchlightStat").innerHTML = "OFF"
-
+            if (data['blender']) {
+                document.getElementById("blenderStat").innerHTML = "ON"
+            } else {
+                document.getElementById("blenderStat").innerHTML = "OFF"
+            }
         });
     </script>
     <style>
