@@ -55,10 +55,12 @@ def retrieveBluetooth():
             if c == '#':
                 for i in range (0,7):
                     c = s.readline()
+                    if '*' in c:
+                        break
                     string += c
-                break
+                break 
         
-        final_message = str(string.split('#', 1)[1])    # String of data transmitted through bluetooth from device
+        final_message = str(string)    # String of data transmitted through bluetooth from device
     except:
         return  # sometime exception might happen when server is trying to read serial data but no new data has been sent. 
                 # when this happen, skip the process below and let the server re-request serial data.
