@@ -40,8 +40,7 @@ def retrieveData(request):
         pusher_client.trigger('my-channel', 'my-event', json.dumps(data.__dict__))
         time.sleep(3)
 
-@csrf_exempt
-def retrieveBluetooth(request):
+def retrieveBluetooth():
     # @TODO(matthew-ardi): Please put the code where you receive the data from bluetooth signal here and
     # @NOTE(sonminhtran1997): this might not work when running server on your side because it needs our (matthew-ardi) device
     ##
@@ -68,12 +67,6 @@ def retrieveBluetooth(request):
     ##  splitting messages to read boolean values of each event detection
     ##
     split_message = final_message.split('\n')
-    roomLightState = False
-    benchLightState = False
-    blenderState = False
-    spaceHeaterState = False
-    roomOccupiedState = False
-    grinderState = False
 
     event_state = []
     for event in split_message:
@@ -91,14 +84,20 @@ def retrieveBluetooth(request):
     grinderState = event_state[5]
 
     # @TODO:               then modify the global object data
-    data(roomLightState, benchLightState, blenderState, spaceHeaterState, roomOccupiedState, grinderState)
+    setData(roomLightState, benchLightState, blenderState, spaceHeaterState, roomOccupiedState, grinderState)
 
     return
 
+def continuous_read(request):
+    while(1):
+        retrieveBluetooth()
 
 
-def setData(data, roomLight, benchLight, blender, spaceHeater):
+
+def setData(data, roomLight, benchLight, blender, spaceHeater, roomOccupied, grinder):
     data.roomLight = roomLight
     data.benchLight = benchLight
     data.blender = blender
     data.spaceHeater = spaceHeater
+    data.roomOccupied = roomOccupied
+    data.grinder = grinder
