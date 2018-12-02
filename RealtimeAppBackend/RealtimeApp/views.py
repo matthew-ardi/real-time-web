@@ -10,6 +10,7 @@ import json
 import time
 import serial
 import logging
+import copy
 
 pusher_client = pusher.Pusher(
     app_id='659585',
@@ -35,11 +36,6 @@ def change(request):
     data.benchLight = not data.benchLight
     return HttpResponse("done");
 
-@csrf_exempt
-def retrieveData(request):
-    while True:
-        pusher_client.trigger('my-channel', 'my-event', json.dumps(data.__dict__))
-        time.sleep(3)
 
 def retrieveBluetooth():
     # @TODO(matthew-ardi): Please put the code where you receive the data from bluetooth signal here and
@@ -110,9 +106,14 @@ def retrieveBluetooth():
 
     return
 
+@csrf_exempt
 def continuous_read(request):
     while(1):
+        oldData = copy.deepcopy(data)
         retrieveBluetooth()
+        if (oldData.roomLight != data.roomLight) or (oldData.benchLight != data.benchLight) or (oldData.blender != data.blender) or (oldData.spaceHeater != data.spaceHeater) or (oldData.roomOccupied != data.roomOccupied) or (oldData.grinder != data.grinder):
+            pusher_client.trigger('my-channel', 'my-event', json.dumps(data.__dict__))
+
 
 
 
