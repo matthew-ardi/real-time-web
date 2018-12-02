@@ -9,6 +9,7 @@ import os
 import json
 import time
 import serial
+import logging
 
 pusher_client = pusher.Pusher(
     app_id='659585',
@@ -52,23 +53,32 @@ def retrieveBluetooth():
     try:
         while(1):
             c = s.read()    # wait for start character
-            if c == '#':
-                for i in range (0,7):
+            char = str(c).split("'")[1]
+            if char == '#':
+                # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+                # logging.debug('message: start reading serial')
+                # for i in range (0,7):
+                while(1):
                     c = s.readline()
-                    if '*' in c:
+                    chars = c.decode('utf-8')
+                    if '*' in chars:
                         break
-                    string += c
+                    string += chars
                 break 
-        
         final_message = str(string)    # String of data transmitted through bluetooth from device
-    except:
+    except Exception as e:
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.debug('Error in reading serial communication : ' + str(e))
         return  # sometime exception might happen when server is trying to read serial data but no new data has been sent. 
                 # when this happen, skip the process below and let the server re-request serial data.
-
+    # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    # logging.debug('final message: ' + str(string))
     ##
     ##  splitting messages to read boolean values of each event detection
     ##
     split_message = final_message.split('\n')
+    # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    # logging.debug('split message: ' + str(split_message))
 
     event_state = []
     for event in split_message:
@@ -80,13 +90,23 @@ def retrieveBluetooth():
 
     roomLightState = event_state[0]
     benchLightState = event_state[1]
-    blenderState = event_state[2]
-    spaceHeaterState = event_state[3]
-    roomOccupiedState = event_state[4]
-    grinderState = event_state[5]
+    roomOccupiedState = event_state[2]
+    blenderState = event_state[3]
+    grinderState = event_state[4]
+    spaceHeaterState = event_state[5]
+
+    # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    # logging.debug(
+    #     'roomLightState: ' + str(event_state[0]) + \
+    #     ' benchLightState: ' + str(event_state[1]) + \
+    #     ' roomOccupiedState: ' + str(event_state[2]) + \
+    #     ' blenderState: ' + str(event_state[3]) + \
+    #     ' grinderState: ' + str(event_state[4]) + \
+    #     ' spaceHeaterState: ' + str(event_state[5]) 
+    #     )
 
     # @TODO:               then modify the global object data
-    setData(roomLightState, benchLightState, blenderState, spaceHeaterState, roomOccupiedState, grinderState)
+    setData(data, roomLightState, benchLightState, blenderState, spaceHeaterState, roomOccupiedState, grinderState)
 
     return
 
