@@ -20,7 +20,6 @@ from RealtimeApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard/', views.dashboard),
-    path('retrieveData/', views.retrieveData),
     path('change/', views.change),
     path('continuous_read/', views.continuous_read)
 ]

@@ -46,6 +46,16 @@
             } else {
                 document.getElementById("blenderStat").innerHTML = "OFF"
             }
+            if (data['grinder']) {
+                document.getElementById("grinderStat").innerHTML = "ON"
+            } else {
+                document.getElementById("grinderStat").innerHTML = "OFF"
+            }
+            if (data['roomOccupied']) {
+                document.getElementById("roomoccupiedStat").innerHTML = "ON"
+            } else {
+                document.getElementById("roomoccupiedStat").innerHTML = "OFF"
+            }
         });
     </script>
     <style>
@@ -108,6 +118,14 @@
                     <tr>
                         <td>Bench Light</td>
                         <td id="benchlightStat"></td>
+                    </tr>
+                    <tr>
+                        <td>Grinder</td>
+                        <td id="grinderStat"></td>
+                    </tr>
+                    <tr>
+                        <td>Room Occupied</td>
+                        <td id="roomoccupiedStat"></td>
                     </tr>
                 </table>
             </font>
